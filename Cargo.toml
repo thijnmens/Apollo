@@ -5,6 +5,7 @@ edition = "2024"
 authors = ["Thijn Smulders <thijnsmulders04@gmail.com>"]
 description = "A simple logging library for Rust"
 license = "AGPL-3.0"
+homepage = "https://github.com/thijnmens/Apollo"
 
 [dependencies]
 chrono = "0.4.41"
