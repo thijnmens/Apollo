@@ -123,8 +123,8 @@ impl Add<ForegroundColors> for BackgroundColors {
     fn add(self, rhs: ForegroundColors) -> Self::Output {
         let background_color = self.to_string().replace("\x1B[", "").replace("m", "");
         let foreground_color = rhs.to_string().replace("\x1B[", "").replace("m", "");
-        
-        
+
+
         format!("\x1B[{};{}m", background_color, foreground_color)
     }
 }
@@ -153,6 +153,30 @@ impl Add<BackgroundColors> for BackgroundColors {
     }
 }
 
+impl Add<String> for BackgroundColors {
+    type Output = String;
+
+    fn add(self, rhs: String) -> Self::Output {
+        let background_color = self.to_string().replace("\x1B[", "").replace("m", "");
+        let string = rhs.to_string().replace("\x1B[", "").replace("m", "");
+
+
+        format!("\x1B[{};{}m", background_color, string)
+    }
+}
+
+impl Add<BackgroundColors> for String {
+    type Output = String;
+
+    fn add(self, rhs: BackgroundColors) -> Self::Output {
+        let string = self.to_string().replace("\x1B[", "").replace("m", "");
+        let background_color = rhs.to_string().replace("\x1B[", "").replace("m", "");
+
+
+        format!("\x1B[{};{}m", string, background_color)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -161,82 +185,82 @@ mod tests {
     fn test_black() {
         assert_eq!("\x1B[40m", BackgroundColors::black().to_string());
     }
-    
+
     #[test]
     fn test_red() {
         assert_eq!("\x1B[41m", BackgroundColors::red().to_string());
     }
-    
+
     #[test]
     fn test_green() {
         assert_eq!("\x1B[42m", BackgroundColors::green().to_string());
     }
-    
+
     #[test]
     fn test_yellow() {
         assert_eq!("\x1B[43m", BackgroundColors::yellow().to_string());
     }
-    
+
     #[test]
     fn test_blue() {
         assert_eq!("\x1B[44m", BackgroundColors::blue().to_string());
     }
-    
+
     #[test]
     fn test_magenta() {
         assert_eq!("\x1B[45m", BackgroundColors::magenta().to_string());
     }
-    
+
     #[test]
     fn test_cyan() {
         assert_eq!("\x1B[46m", BackgroundColors::cyan().to_string());
     }
-    
+
     #[test]
     fn test_white() {
         assert_eq!("\x1B[47m", BackgroundColors::white().to_string());
     }
-    
+
     #[test]
     fn test_default() {
         assert_eq!("\x1B[49m", BackgroundColors::default().to_string());
     }
-    
+
     #[test]
     fn test_bright_black() {
         assert_eq!("\x1B[100m", BackgroundColors::bright_black().to_string());
     }
-    
+
     #[test]
     fn test_bright_red() {
         assert_eq!("\x1B[101m", BackgroundColors::bright_red().to_string());
     }
-    
+
     #[test]
     fn test_bright_green() {
         assert_eq!("\x1B[102m", BackgroundColors::bright_green().to_string());
     }
-    
+
     #[test]
     fn test_bright_yellow() {
         assert_eq!("\x1B[103m", BackgroundColors::bright_yellow().to_string());
     }
-    
+
     #[test]
     fn test_bright_blue() {
         assert_eq!("\x1B[104m", BackgroundColors::bright_blue().to_string());
     }
-    
+
     #[test]
     fn test_bright_magenta() {
         assert_eq!("\x1B[105m", BackgroundColors::bright_magenta().to_string());
     }
-    
+
     #[test]
     fn test_bright_cyan() {
         assert_eq!("\x1B[106m", BackgroundColors::bright_cyan().to_string());
     }
-    
+
     #[test]
     fn test_bright_white() {
         assert_eq!("\x1B[107m", BackgroundColors::bright_white().to_string());

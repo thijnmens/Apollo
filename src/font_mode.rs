@@ -152,6 +152,30 @@ impl Add<FontMode> for FontMode {
     }
 }
 
+impl Add<String> for FontMode {
+    type Output = String;
+
+    fn add(self, rhs: String) -> Self::Output {
+        let font_mode = self.to_string().replace("\x1B[", "").replace("m", "");
+        let string = rhs.to_string().replace("\x1B[", "").replace("m", "");
+
+
+        format!("\x1B[{};{}m", font_mode, string)
+    }
+}
+
+impl Add<FontMode> for String {
+    type Output = String;
+
+    fn add(self, rhs: FontMode) -> Self::Output {
+        let string = self.to_string().replace("\x1B[", "").replace("m", "");
+        let font_mode = rhs.to_string().replace("\x1B[", "").replace("m", "");
+
+
+        format!("\x1B[{};{}m", string, font_mode)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;

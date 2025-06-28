@@ -6,6 +6,7 @@ pub mod levels;
 use chrono::Utc;
 use crate::foreground_colors::ForegroundColors;
 use crate::background_colors::BackgroundColors;
+use crate::font_mode::FontMode;
 use crate::levels::Levels;
 
 pub struct Apollo {
@@ -45,6 +46,12 @@ impl Apollo {
     pub fn new() -> Apollo {
         Apollo { logging_level: Levels::DEBUG }
     }
+    
+    
+    /// Gets the current time in Day/Months/Year Hour:Minute:Second.Millisecond format
+    fn get_time_as_string(&self) -> String {
+        Utc::now().format("%D %H:%M:%S%.3f").to_string()
+    }
 
     /// Prints a message to the console with the DEBUG label
     ///
@@ -68,16 +75,16 @@ impl Apollo {
             return None;
         }
 
-        // Get current time is [day/month/year hour:minute:second] format
-        let current_time = Utc::now().format("%D %H:%M:%S").to_string();
+        // Get current time
+        let current_time: String = self.get_time_as_string();
 
         // Get colors to print
-        let color_date = ForegroundColors::bright_green();
-        let color_label = ForegroundColors::cyan();
-        let color_text = ForegroundColors::bright_white();
+        let date: ForegroundColors = ForegroundColors::bright_green();
+        let label: ForegroundColors = ForegroundColors::cyan();
+        let text: String = ForegroundColors::bright_white() + FontMode::bold();
 
         // Print to console
-        let message = format!("{color_date}[{current_time}]\x1B[0m {color_label}[ DEBUG ]\x1B[0m | {color_text}{s}\x1B[0m");
+        let message = format!("{date}[{current_time}]\x1B[0m {label}[ DEBUG ]\x1B[0m | {text}{s}\x1B[0m");
         println!("{message}");
 
         Some(message)
@@ -106,15 +113,15 @@ impl Apollo {
         }
 
         // Get current time is [day/month/year hour:minute:second] format
-        let current_time = Utc::now().format("%D %H:%M:%S").to_string();
+        let current_time: String = self.get_time_as_string();
 
         // Get colors to print
-        let color_date = ForegroundColors::bright_green();
-        let color_label = ForegroundColors::blue();
-        let color_text = ForegroundColors::bright_white();
+        let date: ForegroundColors = ForegroundColors::bright_green();
+        let label: ForegroundColors = ForegroundColors::blue();
+        let text: ForegroundColors = ForegroundColors::bright_white();
 
         // Print to console
-        let message = format!("{color_date}[{current_time}]\x1B[0m {color_label}[ INFO  ]\x1B[0m | {color_text}{s}\x1B[0m");
+        let message = format!("{date}[{current_time}]\x1B[0m {label}[ INFO  ]\x1B[0m | {text}{s}\x1B[0m");
         println!("{message}");
 
         Some(message)
@@ -143,15 +150,15 @@ impl Apollo {
         }
 
         // Get current time is [day/month/year hour:minute:second] format
-        let current_time = Utc::now().format("%D %H:%M:%S").to_string();
+        let current_time: String = self.get_time_as_string();
 
         // Get colors to print
-        let color_date = ForegroundColors::bright_green();
-        let color_label = ForegroundColors::yellow();
-        let color_text = ForegroundColors::bright_white();
+        let date: ForegroundColors = ForegroundColors::bright_green();
+        let label: ForegroundColors = ForegroundColors::yellow();
+        let text: ForegroundColors = ForegroundColors::yellow();
 
         // Print to console
-        let message = format!("{color_date}[{current_time}]\x1B[0m {color_label}[ WARN  ]\x1B[0m | {color_text}{s}\x1B[0m");
+        let message: String = format!("{date}[{current_time}]\x1B[0m {label}[ WARN  ]\x1B[0m | {text}{s}\x1B[0m");
         println!("{message}");
 
         Some(message)
@@ -180,15 +187,15 @@ impl Apollo {
         }
 
         // Get current time is [day/month/year hour:minute:second] format
-        let current_time = Utc::now().format("%D %H:%M:%S").to_string();
+        let current_time: String = self.get_time_as_string();
 
         // Get colors to print
-        let color_date = ForegroundColors::bright_green();
-        let color_label = ForegroundColors::red();
-        let color_text = ForegroundColors::bright_white();
+        let date: ForegroundColors = ForegroundColors::bright_green();
+        let label: ForegroundColors = ForegroundColors::red();
+        let text: ForegroundColors = ForegroundColors::red();
 
         // Print to console
-        let message = format!("{color_date}[{current_time}]\x1B[0m {color_label}[ ERROR ]\x1B[0m | {color_text}{s}\x1B[0m");
+        let message: String = format!("{date}[{current_time}]\x1B[0m {label}[ ERROR ]\x1B[0m | {text}{s}\x1B[0m");
         eprintln!("{message}");
 
         Some(message)
@@ -217,15 +224,15 @@ impl Apollo {
         }
 
         // Get current time is [day/month/year hour:minute:second] format
-        let current_time = Utc::now().format("%D %H:%M:%S").to_string();
+        let current_time: String = self.get_time_as_string();
 
         // Get colors to print
-        let color_date = ForegroundColors::bright_green();
-        let color_label = ForegroundColors::bright_red();
-        let color_text = ForegroundColors::bright_white() + BackgroundColors::bright_red();
+        let date: ForegroundColors = ForegroundColors::bright_green();
+        let label: ForegroundColors = ForegroundColors::bright_red();
+        let text: String = ForegroundColors::bright_white() + BackgroundColors::bright_red() + FontMode::bold();
 
         // Print to console
-        let message = format!("{color_date}[{current_time}]\x1B[0m {color_label}[ CRIT  ]\x1B[0m | {color_text}{s}\x1B[0m");
+        let message: String = format!("{date}[{current_time}]\x1B[0m {label}[ CRIT  ]\x1B[0m | {text}{s}\x1B[0m");
         eprintln!("{message}");
 
         Some(message)

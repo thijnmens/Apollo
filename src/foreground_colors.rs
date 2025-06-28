@@ -153,6 +153,30 @@ impl Add<ForegroundColors> for ForegroundColors {
     }
 }
 
+impl Add<String> for ForegroundColors {
+    type Output = String;
+
+    fn add(self, rhs: String) -> Self::Output {
+        let foreground_color = self.to_string().replace("\x1B[", "").replace("m", "");
+        let string = rhs.to_string().replace("\x1B[", "").replace("m", "");
+
+
+        format!("\x1B[{};{}m", foreground_color, string)
+    }
+}
+
+impl Add<ForegroundColors> for String {
+    type Output = String;
+
+    fn add(self, rhs: ForegroundColors) -> Self::Output {
+        let string = self.to_string().replace("\x1B[", "").replace("m", "");
+        let foreground_color = rhs.to_string().replace("\x1B[", "").replace("m", "");
+
+
+        format!("\x1B[{};{}m", string, foreground_color)
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
