@@ -1,6 +1,5 @@
 [package]
 name = "apollo-logger"
-version = "0.1.0"
 edition = "2024"
 authors = ["Thijn Smulders <thijnsmulders04@gmail.com>"]
 description = "A simple logging library for Rust"
