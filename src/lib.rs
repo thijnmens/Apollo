@@ -317,4 +317,11 @@ mod tests {
         assert!(logger.error("This is a test error message").is_none());
         assert!(logger.critical("This is a test critical message").is_none());
     }
+    
+    #[test]
+    fn test_default_creates_new_instance() {
+        let logger = Apollo::default();
+        
+        assert!(logger.debug("This is a test debug message").is_some());
+    }
 }
