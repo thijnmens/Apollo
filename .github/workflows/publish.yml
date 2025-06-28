@@ -6,20 +6,37 @@ on:
 
 env:
   CARGO_TERM_COLOR: always
-
+  CARGO_REGISTRY_TOKEN: ${{ secrets.CRATES_TOKEN }}
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      CARGO_REGISTRY_TOKEN: ${{ env.CRATES_TOKEN }}
-
     steps:
-      - uses: actions/checkout@v4
-      - name: Prepare
-        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
-      - name: Build
-        run: cargo build --verbose
-      - name: Publish
-        run: cargo publish --config package.version=${{ env.RELEASE_VERSION }}
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@v4
+
+      - name: Install cargo-edit
+        run: cargo install cargo-edit --features vendored-openssl
+
+      - name: Get version from release tag
+        id: get_version
+        run: echo "CRATE_VERSION=${GITHUB_REF#refs/tags/v}" >> $GITHUB_OUTPUT
+
+      - name: Set package version
+        run: cargo set-version ${{ steps.get_version.outputs.CRATE_VERSION }}
+
+      - name: Check before publish
+        run: cargo check --verbose
+
+      - name: Build before publish
+        run: cargo build --release --verbose
+
+      - name: Run tests before publish
+        run: cargo test --release --verbose
+
+      - name: Publish to Crates.io
+        run: cargo publish
