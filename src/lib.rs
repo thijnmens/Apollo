@@ -25,7 +25,7 @@ impl Apollo {
     /// # Examples
     ///
     /// ```
-    /// use crate::apollo::Apollo;
+    /// use crate::apollo_logger::Apollo;
     ///
     /// let l = Apollo::new(); // The default logging level is Debug
     ///
@@ -34,8 +34,8 @@ impl Apollo {
     /// ```
     /// If you require a different logging level, please use the following code instead
     /// ```
-    /// use crate::apollo::Apollo;
-    /// use crate::apollo::levels::Levels;
+    /// use crate::apollo_logger::Apollo;
+    /// use crate::apollo_logger::levels::Levels;
     ///
     /// let l = Apollo { logging_level: Levels::INFO };
     ///
@@ -55,11 +55,11 @@ impl Apollo {
     /// # Examples
     ///
     /// ```
-    /// use crate::apollo::Apollo;
+    /// use crate::apollo_logger::Apollo;
     ///
     /// let l = Apollo::new();
     ///
-    /// l.warn("This is an debug message")
+    /// l.warn("This is an debug message");
     /// ```
     pub fn debug(&self, s: &str) -> Option<String> {
 
@@ -92,7 +92,7 @@ impl Apollo {
     /// # Examples
     ///
     /// ```
-    /// use crate::apollo::Apollo;
+    /// use crate::apollo_logger::Apollo;
     ///
     /// let l = Apollo::new();
     ///
@@ -129,7 +129,7 @@ impl Apollo {
     /// # Examples
     ///
     /// ```
-    /// use crate::apollo::Apollo;
+    /// use crate::apollo_logger::Apollo;
     ///
     /// let l = Apollo::new();
     ///
@@ -166,7 +166,7 @@ impl Apollo {
     /// # Examples
     ///
     /// ```
-    /// use crate::apollo::Apollo;
+    /// use crate::apollo_logger::Apollo;
     ///
     /// let l = Apollo::new();
     ///
@@ -203,7 +203,7 @@ impl Apollo {
     /// # Examples
     ///
     /// ```
-    /// use crate::apollo::Apollo;
+    /// use crate::apollo_logger::Apollo;
     ///
     /// let l = Apollo::new();
     ///

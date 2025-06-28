@@ -1,0 +1,22 @@
+name: Publish
+
+on:
+  release:
+    types: [published, prereleased]
+
+env:
+  CARGO_TERM_COLOR: always
+  CARGO_REGISTRY_TOKEN: ${{ env.CRATES_TOKEN }}
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Prepare
+        run: echo "RELEASE_VERSION=${GITHUB_REF#refs/*/}" >> $GITHUB_ENV
+      - name: Build
+        run: cargo build --verbose
+      - name: Publish
+        run: cargo publish
