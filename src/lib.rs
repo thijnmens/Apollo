@@ -12,17 +12,23 @@ pub struct Apollo {
     pub logging_level: Levels
 }
 
+impl Default for Apollo {
+    fn default() -> Self {
+        Self::new()
+    }
+}
+
 impl Apollo {
-    
+
     /// Creates a new Apollo instance
-    /// 
-    /// # Examples 
-    /// 
+    ///
+    /// # Examples
+    ///
     /// ```
     /// use crate::apollo::Apollo;
-    /// 
+    ///
     /// let l = Apollo::new(); // The default logging level is Debug
-    /// 
+    ///
     /// l.debug("This message will be printed");
     /// l.warn("This message will also be printed");
     /// ```
@@ -32,7 +38,7 @@ impl Apollo {
     /// use crate::apollo::levels::Levels;
     ///
     /// let l = Apollo { logging_level: Levels::INFO };
-    /// 
+    ///
     /// l.debug("This message will NOT printed");
     /// l.warn("This message will be printed");
     /// ```
@@ -42,15 +48,15 @@ impl Apollo {
 
     /// Prints a message to the console with the DEBUG label
     ///
-    /// # Arguments 
+    /// # Arguments
     ///
     /// * `s`: String to print to the console
     ///
-    /// # Examples 
+    /// # Examples
     ///
     /// ```
     /// use crate::apollo::Apollo;
-    /// 
+    ///
     /// let l = Apollo::new();
     ///
     /// l.warn("This is an debug message")
@@ -72,25 +78,25 @@ impl Apollo {
 
         // Print to console
         let message = format!("{color_date}[{current_time}]\x1B[0m {color_label}[ DEBUG ]\x1B[0m | {color_text}{s}\x1B[0m");
-        println!("{}", message);
-        
+        println!("{message}");
+
         Some(message)
     }
-    
+
     /// Prints a message to the console with the INFO label
-    /// 
-    /// # Arguments 
-    /// 
+    ///
+    /// # Arguments
+    ///
     /// * `s`: String to print to the console
-    /// 
-    /// # Examples 
-    /// 
+    ///
+    /// # Examples
+    ///
     /// ```
     /// use crate::apollo::Apollo;
     ///
     /// let l = Apollo::new();
-    /// 
-    /// l.info("This is an info message")
+    ///
+    /// l.info("This is an info message");
     /// ```
     pub fn info(&self, s: &str) -> Option<String> {
 
@@ -109,25 +115,25 @@ impl Apollo {
 
         // Print to console
         let message = format!("{color_date}[{current_time}]\x1B[0m {color_label}[ INFO  ]\x1B[0m | {color_text}{s}\x1B[0m");
-        println!("{}", message);
-        
+        println!("{message}");
+
         Some(message)
     }
 
     /// Prints a message to the console with the WARN label
     ///
-    /// # Arguments 
+    /// # Arguments
     ///
     /// * `s`: String to print to the console
     ///
-    /// # Examples 
+    /// # Examples
     ///
     /// ```
     /// use crate::apollo::Apollo;
     ///
     /// let l = Apollo::new();
     ///
-    /// l.warn("This is an warning message")
+    /// l.warn("This is an warning message");
     /// ```
     pub fn warn(&self, s: &str) -> Option<String> {
 
@@ -146,33 +152,33 @@ impl Apollo {
 
         // Print to console
         let message = format!("{color_date}[{current_time}]\x1B[0m {color_label}[ WARN  ]\x1B[0m | {color_text}{s}\x1B[0m");
-        println!("{}", message);
-        
+        println!("{message}");
+
         Some(message)
     }
 
     /// Prints a message to the console with the ERROR label
     ///
-    /// # Arguments 
+    /// # Arguments
     ///
     /// * `s`: String to print to the console
     ///
-    /// # Examples 
+    /// # Examples
     ///
     /// ```
     /// use crate::apollo::Apollo;
     ///
     /// let l = Apollo::new();
     ///
-    /// l.error("This is an error message")
+    /// l.error("This is an error message");
     /// ```
     pub fn error(&self, s: &str) -> Option<String> {
-        
+
         // Check if the logging level is high enough
         if self.logging_level.as_u8() > Levels::ERROR.as_u8() {
             return None;
         }
-        
+
         // Get current time is [day/month/year hour:minute:second] format
         let current_time = Utc::now().format("%D %H:%M:%S").to_string();
 
@@ -180,28 +186,28 @@ impl Apollo {
         let color_date = ForegroundColors::bright_green();
         let color_label = ForegroundColors::red();
         let color_text = ForegroundColors::bright_white();
-        
+
         // Print to console
         let message = format!("{color_date}[{current_time}]\x1B[0m {color_label}[ ERROR ]\x1B[0m | {color_text}{s}\x1B[0m");
-        eprintln!("{}", message);
-        
+        eprintln!("{message}");
+
         Some(message)
     }
 
     /// Prints a message to the console with the CRITICAL label
     ///
-    /// # Arguments 
+    /// # Arguments
     ///
     /// * `s`: String to print to the console
     ///
-    /// # Examples 
+    /// # Examples
     ///
     /// ```
     /// use crate::apollo::Apollo;
     ///
     /// let l = Apollo::new();
     ///
-    /// l.critical("This is an critical message")
+    /// l.critical("This is an critical message");
     /// ```
     pub fn critical(&self, s: &str) -> Option<String> {
 
@@ -220,8 +226,8 @@ impl Apollo {
 
         // Print to console
         let message = format!("{color_date}[{current_time}]\x1B[0m {color_label}[ CRIT  ]\x1B[0m | {color_text}{s}\x1B[0m");
-        eprintln!("{}", message);
-        
+        eprintln!("{message}");
+
         Some(message)
     }
 }
@@ -230,7 +236,7 @@ impl Apollo {
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
-    
+
     /// Test if debug will log to console with default logger level
     #[test]
     fn test_debug() {
