@@ -289,4 +289,20 @@ mod tests {
 
         assert_eq!("\x1B[41;3m", background_color + font_mode);
     }
+
+    #[test]
+    fn test_background_color_add_string() {
+        let background_color = BackgroundColors::red();
+        let string = FontMode::italic() + ForegroundColors::bright_blue();
+
+        assert_eq!("\x1B[41;3;94m", background_color + string);
+    }
+
+    #[test]
+    fn test_string_add_background_color() {
+        let string = FontMode::italic() + ForegroundColors::bright_blue();
+        let background_color = BackgroundColors::red();
+
+        assert_eq!("\x1B[3;94;41m", string + background_color);
+    }
 }

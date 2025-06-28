@@ -289,4 +289,20 @@ mod tests {
 
         assert_eq!("\x1B[36;4m", foreground_color + font_mode);
     }
+
+    #[test]
+    fn test_foreground_color_add_string() {
+        let foreground_color = ForegroundColors::cyan();
+        let string = BackgroundColors::black() + FontMode::strikethrough();
+
+        assert_eq!("\x1B[36;40;9m", foreground_color + string);
+    }
+
+    #[test]
+    fn test_string_add_foreground_color() {
+        let string = BackgroundColors::black() + FontMode::strikethrough();
+        let foreground_color = ForegroundColors::cyan();
+
+        assert_eq!("\x1B[40;9;36m", string + foreground_color);
+    }
 }

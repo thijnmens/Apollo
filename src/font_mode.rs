@@ -288,4 +288,20 @@ mod tests {
         
         assert_eq!("\x1B[5;1m", font_mode_one + font_mode_two);
     }
+
+    #[test]
+    fn test_font_mode_add_string() {
+        let font_mode = FontMode::underline();
+        let string = BackgroundColors::yellow() + ForegroundColors::bright_magenta();
+
+        assert_eq!("\x1B[4;43;95m", font_mode + string);
+    }
+
+    #[test]
+    fn test_string_add_font_mode() {
+        let string = BackgroundColors::yellow() + ForegroundColors::bright_magenta();
+        let font_mode = FontMode::underline();
+
+        assert_eq!("\x1B[43;95;4m", string + font_mode);
+    }
 }

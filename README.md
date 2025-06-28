@@ -3,8 +3,9 @@
 <a href="https://codecov.io/github/thijnmens/apollo" > 
  <img src="https://codecov.io/github/thijnmens/apollo/graph/badge.svg?token=2ASUHDWY90" alt="codecov"/> 
 </a>
-![crates](https://img.shields.io/crates/v/apollo-logger.svg)
-
+<a href="https://img.shields.io/crates/v/apollo-logger.svg">
+    <img src="https://img.shields.io/crates/v/apollo-logger.svg" alt="crates" />
+</a>
 
 **A logging library for Rust**
 
