@@ -3,6 +3,7 @@ pub mod background_colors;
 pub mod font_mode;
 pub mod levels;
 
+use std::str::from_utf8;
 use chrono::Utc;
 use crate::foreground_colors::ForegroundColors;
 use crate::background_colors::BackgroundColors;
@@ -53,7 +54,7 @@ impl Apollo {
         Utc::now().format("%D %H:%M:%S%.3f").to_string()
     }
 
-    /// Prints a message to the console with the DEBUG label
+    /// Prints a message to the console with the DEBUG label_format
     ///
     /// # Arguments
     ///
@@ -78,19 +79,23 @@ impl Apollo {
         // Get current time
         let current_time: String = self.get_time_as_string();
 
+        // Get caller file and line number
+        let location = self.get_caller_location().unwrap_or(String::from("Unknown:0"));
+
         // Get colors to print
-        let date: ForegroundColors = ForegroundColors::bright_green();
-        let label: ForegroundColors = ForegroundColors::cyan();
-        let text: String = ForegroundColors::bright_white() + FontMode::bold();
+        let date_format = ForegroundColors::bright_green();
+        let label_format = ForegroundColors::cyan();
+        let location_format = FontMode::italic();
+        let text_format = ForegroundColors::bright_cyan();
 
         // Print to console
-        let message = format!("{date}[{current_time}]\x1B[0m {label}[ DEBUG ]\x1B[0m | {text}{s}\x1B[0m");
+        let message = format!("{date_format}[{current_time}]\x1B[0m {label_format}[ DEBUG ]\x1B[0m | {location_format}{location}\x1B[0m | {text_format}{s}\x1B[0m");
         println!("{message}");
 
         Some(message)
     }
 
-    /// Prints a message to the console with the INFO label
+    /// Prints a message to the console with the INFO label_format
     ///
     /// # Arguments
     ///
@@ -115,19 +120,23 @@ impl Apollo {
         // Get current time is [day/month/year hour:minute:second] format
         let current_time: String = self.get_time_as_string();
 
+        // Get caller file and line number
+        let location = self.get_caller_location().unwrap_or(String::from("Unknown:0"));
+
         // Get colors to print
-        let date: ForegroundColors = ForegroundColors::bright_green();
-        let label: ForegroundColors = ForegroundColors::blue();
-        let text: ForegroundColors = ForegroundColors::bright_white();
+        let date_format = ForegroundColors::bright_green();
+        let label_format = ForegroundColors::blue();
+        let location_format = FontMode::italic();
+        let text_format = ForegroundColors::bright_white();
 
         // Print to console
-        let message = format!("{date}[{current_time}]\x1B[0m {label}[ INFO  ]\x1B[0m | {text}{s}\x1B[0m");
+        let message = format!("{date_format}[{current_time}]\x1B[0m {label_format}[ INFO  ]\x1B[0m | {location_format}{location}\x1B[0m | {text_format}{s}\x1B[0m");
         println!("{message}");
 
         Some(message)
     }
 
-    /// Prints a message to the console with the WARN label
+    /// Prints a message to the console with the WARN label_format
     ///
     /// # Arguments
     ///
@@ -152,19 +161,23 @@ impl Apollo {
         // Get current time is [day/month/year hour:minute:second] format
         let current_time: String = self.get_time_as_string();
 
+        // Get caller file and line number
+        let location = self.get_caller_location().unwrap_or(String::from("Unknown:0"));
+
         // Get colors to print
-        let date: ForegroundColors = ForegroundColors::bright_green();
-        let label: ForegroundColors = ForegroundColors::yellow();
-        let text: ForegroundColors = ForegroundColors::yellow();
+        let date_format = ForegroundColors::bright_green();
+        let label_format = ForegroundColors::yellow();
+        let location_format = FontMode::italic();
+        let text_format = ForegroundColors::yellow() + FontMode::bold();
 
         // Print to console
-        let message: String = format!("{date}[{current_time}]\x1B[0m {label}[ WARN  ]\x1B[0m | {text}{s}\x1B[0m");
+        let message: String = format!("{date_format}[{current_time}]\x1B[0m {label_format}[ WARN  ]\x1B[0m | {location_format}{location}\x1B[0m | {text_format}{s}\x1B[0m");
         println!("{message}");
 
         Some(message)
     }
 
-    /// Prints a message to the console with the ERROR label
+    /// Prints a message to the console with the ERROR label_format
     ///
     /// # Arguments
     ///
@@ -189,19 +202,23 @@ impl Apollo {
         // Get current time is [day/month/year hour:minute:second] format
         let current_time: String = self.get_time_as_string();
 
+        // Get caller file and line number
+        let location = self.get_caller_location().unwrap_or(String::from("Unknown:0"));
+        
         // Get colors to print
-        let date: ForegroundColors = ForegroundColors::bright_green();
-        let label: ForegroundColors = ForegroundColors::red();
-        let text: ForegroundColors = ForegroundColors::red();
+        let date_format = ForegroundColors::bright_green();
+        let label_format = ForegroundColors::red();
+        let location_format = FontMode::italic();
+        let text_format = ForegroundColors::red() + FontMode::bold();
 
         // Print to console
-        let message: String = format!("{date}[{current_time}]\x1B[0m {label}[ ERROR ]\x1B[0m | {text}{s}\x1B[0m");
+        let message: String = format!("{date_format}[{current_time}]\x1B[0m {label_format}[ ERROR ]\x1B[0m | {location_format}{location}\x1B[0m | {text_format}{s}\x1B[0m");
         eprintln!("{message}");
 
         Some(message)
     }
 
-    /// Prints a message to the console with the CRITICAL label
+    /// Prints a message to the console with the CRITICAL label_format
     ///
     /// # Arguments
     ///
@@ -226,16 +243,78 @@ impl Apollo {
         // Get current time is [day/month/year hour:minute:second] format
         let current_time: String = self.get_time_as_string();
 
+        // Get caller file and line number
+        let location = self.get_caller_location().unwrap_or(String::from("Unknown:0"));
+
         // Get colors to print
-        let date: ForegroundColors = ForegroundColors::bright_green();
-        let label: ForegroundColors = ForegroundColors::bright_red();
-        let text: String = ForegroundColors::bright_white() + BackgroundColors::bright_red() + FontMode::bold();
+        let date_format = ForegroundColors::bright_green();
+        let label_format = ForegroundColors::bright_red();
+        let location_format = FontMode::italic();
+        let text_format = ForegroundColors::bright_white() + BackgroundColors::bright_red() + FontMode::bold() + FontMode::underline();
 
         // Print to console
-        let message: String = format!("{date}[{current_time}]\x1B[0m {label}[ CRIT  ]\x1B[0m | {text}{s}\x1B[0m");
+        let message: String = format!("{date_format}[{current_time}]\x1B[0m {label_format}[ CRIT  ]\x1B[0m | {location_format}{location}\x1B[0m | {text_format}{s}\x1B[0m");
         eprintln!("{message}");
 
         Some(message)
+    }
+    
+    /// Gets the filename and location of the parent function that called this function
+    fn get_caller_location(&self) -> Option<String> {
+        let mut caller_location: Option<String> = None;
+        
+        backtrace::trace(|frame| {
+            backtrace::resolve_frame(frame, |symbol| {
+                
+                // Check if location has been found
+                if caller_location.is_some() {
+                    return;
+                }
+
+                // Get data
+                let file_name = symbol.filename();
+                let line_number = symbol.lineno();
+                let symbol_name = symbol.name();
+                
+                // If any of the data is None, continue to next frame
+                if file_name.is_none() || line_number.is_none() || symbol_name.is_none() {
+                    return;
+                }
+                
+                // Filter out internal function calls
+                let file_os_str = file_name.unwrap().to_str().unwrap();
+                if Self::filter_locations(file_os_str) {
+                    return
+                }
+                
+                // Filter out backtrace symbols
+                let symbol_str = from_utf8(symbol_name.unwrap().as_bytes()).unwrap();
+                if Self::filter_locations(symbol_str) {
+                    return;
+                }
+                
+                caller_location = Some(format!("{}:{}", file_name.unwrap().file_name().unwrap().display(), line_number.unwrap()));
+            });
+            caller_location.is_none()
+        });
+        caller_location
+    }
+    
+    // Check if location contains any of these blacklisted locations
+    fn filter_locations(location: &str) -> bool {
+        location.contains(".cargo\\registry") || 
+            location.contains("src\\libstd") || 
+            location.contains("src\\libcore") ||
+            location.contains("src\\backtrace") ||
+            location.contains("get_caller_location") ||
+            location.contains("backtrace::trace::{{closure}}") ||
+            location.contains("backtrace::resolve_frame::{{closure}}") ||
+            location.contains("core::") ||
+            location.contains("Apollo::critical") ||
+            location.contains("Apollo::error") ||
+            location.contains("Apollo::warn") ||
+            location.contains("Apollo::info") ||
+            location.contains("Apollo::debug")
     }
 }
 
