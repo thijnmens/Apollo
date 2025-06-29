@@ -4,7 +4,7 @@ pub enum Levels {
     WARN,
     ERROR,
     CRITICAL,
-    NONE
+    NONE,
 }
 
 impl Levels {
@@ -15,7 +15,7 @@ impl Levels {
             Self::WARN => 2,
             Self::ERROR => 3,
             Self::CRITICAL => 4,
-            Self::NONE => u8::MAX
+            Self::NONE => u8::MAX,
         }
     }
 }
@@ -24,7 +24,7 @@ impl Levels {
 mod tests {
     // Note this useful idiom: importing names from outer (for mod tests) scope.
     use super::*;
-    
+
     #[test]
     fn test_correct_order() {
         assert!(Levels::NONE.as_u8() > Levels::CRITICAL.as_u8());

@@ -1,7 +1,7 @@
-use std::fmt;
-use std::ops::Add;
 use crate::font_mode::FontMode;
 use crate::foreground_colors::ForegroundColors;
+use std::fmt;
+use std::ops::Add;
 
 pub enum BackgroundColors {
     Black(&'static str),
@@ -112,7 +112,7 @@ impl fmt::Display for BackgroundColors {
             BackgroundColors::BrightBlue(s) => write!(f, "{}", s),
             BackgroundColors::BrightMagenta(s) => write!(f, "{}", s),
             BackgroundColors::BrightCyan(s) => write!(f, "{}", s),
-            BackgroundColors::BrightWhite(s) => write!(f, "{}", s)
+            BackgroundColors::BrightWhite(s) => write!(f, "{}", s),
         }
     }
 }
@@ -123,7 +123,6 @@ impl Add<ForegroundColors> for BackgroundColors {
     fn add(self, rhs: ForegroundColors) -> Self::Output {
         let background_color = self.to_string().replace("\x1B[", "").replace("m", "");
         let foreground_color = rhs.to_string().replace("\x1B[", "").replace("m", "");
-
 
         format!("\x1B[{};{}m", background_color, foreground_color)
     }
@@ -136,7 +135,6 @@ impl Add<FontMode> for BackgroundColors {
         let background_color = self.to_string().replace("\x1B[", "").replace("m", "");
         let font_mode = rhs.to_string().replace("\x1B[", "").replace("m", "");
 
-
         format!("\x1B[{};{}m", background_color, font_mode)
     }
 }
@@ -147,7 +145,6 @@ impl Add<BackgroundColors> for BackgroundColors {
     fn add(self, rhs: BackgroundColors) -> Self::Output {
         let background_color_lhs = self.to_string().replace("\x1B[", "").replace("m", "");
         let background_color_rhs = rhs.to_string().replace("\x1B[", "").replace("m", "");
-
 
         format!("\x1B[{};{}m", background_color_lhs, background_color_rhs)
     }
@@ -160,7 +157,6 @@ impl Add<String> for BackgroundColors {
         let background_color = self.to_string().replace("\x1B[", "").replace("m", "");
         let string = rhs.to_string().replace("\x1B[", "").replace("m", "");
 
-
         format!("\x1B[{};{}m", background_color, string)
     }
 }
@@ -171,7 +167,6 @@ impl Add<BackgroundColors> for String {
     fn add(self, rhs: BackgroundColors) -> Self::Output {
         let string = self.to_string().replace("\x1B[", "").replace("m", "");
         let background_color = rhs.to_string().replace("\x1B[", "").replace("m", "");
-
 
         format!("\x1B[{};{}m", string, background_color)
     }

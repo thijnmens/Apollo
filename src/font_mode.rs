@@ -1,7 +1,7 @@
-use std::fmt;
-use std::ops::Add;
 use crate::background_colors::BackgroundColors;
 use crate::foreground_colors::ForegroundColors;
+use std::fmt;
+use std::ops::Add;
 
 pub enum FontMode {
     Bold(&'static str),
@@ -112,7 +112,7 @@ impl fmt::Display for FontMode {
             FontMode::ResetBlinking(s) => write!(f, "{}", s),
             FontMode::ResetReverse(s) => write!(f, "{}", s),
             FontMode::ResetInvisible(s) => write!(f, "{}", s),
-            FontMode::ResetStrikethrough(s) => write!(f, "{}", s)
+            FontMode::ResetStrikethrough(s) => write!(f, "{}", s),
         }
     }
 }
@@ -123,7 +123,6 @@ impl Add<BackgroundColors> for FontMode {
     fn add(self, rhs: BackgroundColors) -> Self::Output {
         let font_mode = self.to_string().replace("\x1B[", "").replace("m", "");
         let background_color = rhs.to_string().replace("\x1B[", "").replace("m", "");
-
 
         format!("\x1B[{};{}m", font_mode, background_color)
     }
@@ -147,7 +146,6 @@ impl Add<FontMode> for FontMode {
         let font_mode_lhs = self.to_string().replace("\x1B[", "").replace("m", "");
         let font_mode_rhs = rhs.to_string().replace("\x1B[", "").replace("m", "");
 
-
         format!("\x1B[{};{}m", font_mode_lhs, font_mode_rhs)
     }
 }
@@ -159,7 +157,6 @@ impl Add<String> for FontMode {
         let font_mode = self.to_string().replace("\x1B[", "").replace("m", "");
         let string = rhs.to_string().replace("\x1B[", "").replace("m", "");
 
-
         format!("\x1B[{};{}m", font_mode, string)
     }
 }
@@ -170,7 +167,6 @@ impl Add<FontMode> for String {
     fn add(self, rhs: FontMode) -> Self::Output {
         let string = self.to_string().replace("\x1B[", "").replace("m", "");
         let font_mode = rhs.to_string().replace("\x1B[", "").replace("m", "");
-
 
         format!("\x1B[{};{}m", string, font_mode)
     }
@@ -184,92 +180,92 @@ mod tests {
     fn test_bold() {
         assert_eq!("\x1B[1m", FontMode::bold().to_string());
     }
-    
+
     #[test]
     fn test_dim() {
         assert_eq!("\x1B[2m", FontMode::dim().to_string());
     }
-    
+
     #[test]
     fn test_italic() {
         assert_eq!("\x1B[3m", FontMode::italic().to_string());
     }
-    
+
     #[test]
     fn test_underline() {
         assert_eq!("\x1B[4m", FontMode::underline().to_string());
     }
-    
+
     #[test]
     fn test_blinking() {
         assert_eq!("\x1B[5m", FontMode::blinking().to_string());
     }
-    
+
     #[test]
     fn test_reverse() {
         assert_eq!("\x1B[7m", FontMode::reverse().to_string());
     }
-    
+
     #[test]
     fn test_invisible() {
         assert_eq!("\x1B[8m", FontMode::invisible().to_string());
     }
-    
+
     #[test]
     fn test_strikethrough() {
         assert_eq!("\x1B[9m", FontMode::strikethrough().to_string());
     }
-    
+
     #[test]
     fn test_reset_all() {
         assert_eq!("\x1B[0m", FontMode::reset_all().to_string());
     }
-    
+
     #[test]
     fn test_reset_bold() {
         assert_eq!("\x1B[22m", FontMode::reset_bold().to_string());
     }
-    
+
     #[test]
     fn test_reset_dim() {
         assert_eq!("\x1B[22m", FontMode::reset_dim().to_string());
     }
-    
+
     #[test]
     fn test_reset_italic() {
         assert_eq!("\x1B[23m", FontMode::reset_italic().to_string());
     }
-    
+
     #[test]
     fn test_reset_underline() {
         assert_eq!("\x1B[24m", FontMode::reset_underline().to_string());
     }
-    
+
     #[test]
     fn test_reset_blinking() {
         assert_eq!("\x1B[25m", FontMode::reset_blinking().to_string());
     }
-    
+
     #[test]
     fn test_reset_reverse() {
         assert_eq!("\x1B[27m", FontMode::reset_reverse().to_string());
     }
-    
+
     #[test]
     fn test_reset_invisible() {
         assert_eq!("\x1B[28m", FontMode::reset_invisible().to_string());
     }
-    
+
     #[test]
     fn test_reset_strikethrough() {
         assert_eq!("\x1B[29m", FontMode::reset_strikethrough().to_string());
     }
-    
+
     #[test]
     fn test_font_mode_add_foreground_color() {
         let font_mode = FontMode::blinking();
         let foreground_color = ForegroundColors::blue();
-        
+
         assert_eq!("\x1B[5;34m", font_mode + foreground_color);
     }
 
@@ -280,12 +276,12 @@ mod tests {
 
         assert_eq!("\x1B[5;44m", font_mode + background_color);
     }
-    
+
     #[test]
     fn test_font_mode_add_font_mode() {
         let font_mode_one = FontMode::blinking();
         let font_mode_two = FontMode::bold();
-        
+
         assert_eq!("\x1B[5;1m", font_mode_one + font_mode_two);
     }
 

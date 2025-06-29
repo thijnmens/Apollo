@@ -1,7 +1,7 @@
-use std::fmt;
-use std::ops::Add;
 use crate::background_colors::BackgroundColors;
 use crate::font_mode::FontMode;
+use std::fmt;
+use std::ops::Add;
 
 pub enum ForegroundColors {
     Black(&'static str),
@@ -112,7 +112,7 @@ impl fmt::Display for ForegroundColors {
             ForegroundColors::BrightBlue(s) => write!(f, "{}", s),
             ForegroundColors::BrightMagenta(s) => write!(f, "{}", s),
             ForegroundColors::BrightCyan(s) => write!(f, "{}", s),
-            ForegroundColors::BrightWhite(s) => write!(f, "{}", s)
+            ForegroundColors::BrightWhite(s) => write!(f, "{}", s),
         }
     }
 }
@@ -123,7 +123,6 @@ impl Add<BackgroundColors> for ForegroundColors {
     fn add(self, rhs: BackgroundColors) -> Self::Output {
         let foreground_color = self.to_string().replace("\x1B[", "").replace("m", "");
         let background_color = rhs.to_string().replace("\x1B[", "").replace("m", "");
-
 
         format!("\x1B[{};{}m", foreground_color, background_color)
     }
@@ -136,7 +135,6 @@ impl Add<FontMode> for ForegroundColors {
         let foreground_color = self.to_string().replace("\x1B[", "").replace("m", "");
         let font_mode = rhs.to_string().replace("\x1B[", "").replace("m", "");
 
-
         format!("\x1B[{};{}m", foreground_color, font_mode)
     }
 }
@@ -147,7 +145,6 @@ impl Add<ForegroundColors> for ForegroundColors {
     fn add(self, rhs: ForegroundColors) -> Self::Output {
         let foreground_color_lhs = self.to_string().replace("\x1B[", "").replace("m", "");
         let foreground_color_rhs = rhs.to_string().replace("\x1B[", "").replace("m", "");
-
 
         format!("\x1B[{};{}m", foreground_color_lhs, foreground_color_rhs)
     }
@@ -160,7 +157,6 @@ impl Add<String> for ForegroundColors {
         let foreground_color = self.to_string().replace("\x1B[", "").replace("m", "");
         let string = rhs.to_string().replace("\x1B[", "").replace("m", "");
 
-
         format!("\x1B[{};{}m", foreground_color, string)
     }
 }
@@ -171,7 +167,6 @@ impl Add<ForegroundColors> for String {
     fn add(self, rhs: ForegroundColors) -> Self::Output {
         let string = self.to_string().replace("\x1B[", "").replace("m", "");
         let foreground_color = rhs.to_string().replace("\x1B[", "").replace("m", "");
-
 
         format!("\x1B[{};{}m", string, foreground_color)
     }
@@ -185,82 +180,82 @@ mod tests {
     fn test_black() {
         assert_eq!("\x1B[30m", ForegroundColors::black().to_string());
     }
-    
+
     #[test]
     fn test_red() {
         assert_eq!("\x1B[31m", ForegroundColors::red().to_string());
     }
-    
+
     #[test]
     fn test_green() {
         assert_eq!("\x1B[32m", ForegroundColors::green().to_string());
     }
-    
+
     #[test]
     fn test_yellow() {
         assert_eq!("\x1B[33m", ForegroundColors::yellow().to_string());
     }
-    
+
     #[test]
     fn test_blue() {
         assert_eq!("\x1B[34m", ForegroundColors::blue().to_string());
     }
-    
+
     #[test]
     fn test_magenta() {
         assert_eq!("\x1B[35m", ForegroundColors::magenta().to_string());
     }
-    
+
     #[test]
     fn test_cyan() {
         assert_eq!("\x1B[36m", ForegroundColors::cyan().to_string());
     }
-    
+
     #[test]
     fn test_white() {
         assert_eq!("\x1B[37m", ForegroundColors::white().to_string());
     }
-    
+
     #[test]
     fn test_default() {
         assert_eq!("\x1B[39m", ForegroundColors::default().to_string());
     }
-    
+
     #[test]
     fn test_bright_black() {
         assert_eq!("\x1B[90m", ForegroundColors::bright_black().to_string());
     }
-    
+
     #[test]
     fn test_bright_red() {
         assert_eq!("\x1B[91m", ForegroundColors::bright_red().to_string());
     }
-    
+
     #[test]
     fn test_bright_green() {
         assert_eq!("\x1B[92m", ForegroundColors::bright_green().to_string());
     }
-    
+
     #[test]
     fn test_bright_yellow() {
         assert_eq!("\x1B[93m", ForegroundColors::bright_yellow().to_string());
     }
-    
+
     #[test]
     fn test_bright_blue() {
         assert_eq!("\x1B[94m", ForegroundColors::bright_blue().to_string());
     }
-    
+
     #[test]
     fn test_bright_magenta() {
         assert_eq!("\x1B[95m", ForegroundColors::bright_magenta().to_string());
     }
-    
+
     #[test]
     fn test_bright_cyan() {
         assert_eq!("\x1B[96m", ForegroundColors::bright_cyan().to_string());
     }
-    
+
     #[test]
     fn test_bright_white() {
         assert_eq!("\x1B[97m", ForegroundColors::bright_white().to_string());
